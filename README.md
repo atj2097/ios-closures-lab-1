@@ -14,7 +14,7 @@ Input:
 
 ```swift
 applyKTimes(3) {
-    print("Hello Closures!")
+print("Hello Closures!")
 }
 ```
 Output:
@@ -30,7 +30,13 @@ Hello Closures!
 
 Use `filter` to create an array called `multiples` that contains all the multiples of 3 from `numbers` and then print it.
 
-`let numbers = [1, 2, 3, 4, 6, 8, 9, 3, 12, 11]`
+let numbers = [1, 2, 3, 4, 6, 8, 9, 3, 12, 11]
+//var multiples = [Int]()
+let multiples = numbers.filter({a -> Bool in
+return a % 3 == 0
+
+})
+print(multiples)
 
 Example:
 Input: `let numbers = [1, 2, 3, 4, 6, 8, 9, 3, 12, 11]`
@@ -43,7 +49,11 @@ Expected values: `multiples = [3, 6, 9, 3, 12]`
 Find the largest number from `numbers` and then print it. Use `reduce` to solve this exercise.
 
 Example:
-Input: `let numbers = [4, 7, 1, 9, 6, 5, 6, 9]`
+let numbers = [4, 7, 1, 9, 6, 5, 6, 9]
+let reducedArray = numbers.reduce(0, {x, y in
+return x > y ? x : y
+})
+print(reducedArray)
 
 Output: `9`
 
@@ -53,36 +63,62 @@ Output: `9`
 Join all the strings from `strings` into one using `reduce`. Add spaces in between strings. Print your result.
 
 Example:
-Input: `let strings = ["We", "Heart", "Swift"]`
+let strings = ["We", "Heart", "Swift"]
 
-Output: `"We Heart Swift"`
+let joinedStrings = strings.reduce(""){
+if $0 == "" {
+return $1
+} else {
+return $0 + " " + $1
+}
+}
 
+print(joinedStrings)
 
 ## Question 5
 
-`let cities = ["Shanghai", "Beijing", "Delhi", "Lagos", "Tianjin", "Karachi", "Karachi", "Tokyo", "Guangzhou", "Mumbai", "Moscow", "São Paulo"]`
+let cities = ["Shanghai", "Beijing", "Delhi", "Lagos", "Tianjin", "Karachi", "Karachi", "Tokyo", "Guangzhou", "Mumbai", "Moscow", "São Paulo"]
+//
+//a. Use `sortedBy` to sort `cities` in alphabetical order.
+let sortedCities = cities.sorted()
+print(sortedCities)
 
-a. Use `sortedBy` to sort `cities` in alphabetical order.
+//b. Use `sortedBy` to sort `cities` alphabetical order of the second character of the city name.
+print(cities.sorted(by: {(a, b) in
+return b.dropFirst() > a.dropFirst()}
 
-b. Use `sortedBy` to sort `cities` alphabetical order of the second character of the city name.
+))
+//c. Use `sortedBy` to sort `cities` in order of the length of the city name.
+print(cities.sorted(by: {(a, b) in
+return b.count > a.count }
 
-c. Use `sortedBy` to sort `cities` in order of the length of the city name.
+))
 
 
 ## Question 6
-
-`let citiesWithPopulation: [(String, Int)] = [("Shanghai", 24256800), ("Beijing", 21516000), ("Delhi", 16787941), ("Lagos", 16060303), ("Tianjin", 15200000), ("Karachi", 14910352), ("Karachi", 14160467), ("Tokyo", 13513734), ("Guangzhou", 13080500), ("Mumbai", 12442373), ("Moscow", 12380664), ("São Paulo", 12038175)]`
+//
+let citiesWithPopulation: [(String, Int)] = [("Shanghai", 24256800), ("Beijing", 21516000), ("Delhi", 16787941), ("Lagos", 16060303), ("Tianjin", 15200000), ("Karachi", 14910352), ("Karachi", 14160467), ("Tokyo", 13513734), ("Guangzhou", 13080500), ("Mumbai", 12442373), ("Moscow", 12380664), ("São Paulo", 12038175)]
 
 a. Use `sortedBy` to sort `citiesWithPopulation` in ascending order of population.
 
+let orderOfPopulation = citiesWithPopulation.sorted(by: { x, y in
+x.1 < y.1
+})
+print(orderOfPopulation)
 b. Use `sortedBy` to sort `citiesWithPopulation` in reverse alphabetical order of the last character in the city name.
+
+let orderOfPopulation2 = citiesWithPopulation.sorted(by: {x,y in
+return String(x.0.reversed()) < String(y.0.reversed())})
+print(orderOfPopulation2)
+
+
 
 
 ## Question 7
 
 Sort `numbers` in ascending order by the number of divisors. If two numbers have the same number of divisors the order in which they appear in the sorted array does not matter.
 
-`var numbers = [1, 2, 3, 4, 5, 6]`
+var numbers = [1, 2, 3, 4, 5, 6]
 
 Example:
 Input: `var numbers = [1, 2, 3, 4, 5, 6]`
@@ -90,13 +126,16 @@ Input: `var numbers = [1, 2, 3, 4, 5, 6]`
 Output:
 
 ```swift
-numbers = [1, 2, 3, 5, 4, 6]
-// 1 has one divisor
-// 2, 3 and 5 have 2
-// 4 has 3 divisors
-// 6 has 4 divisors
+var numbers = [1, 2, 3, 5, 4, 6]
+//// 1 has one divisor
+//// 2, 3 and 5 have 2
+//// 4 has 3 divisors
+//// 6 has 4 divisors
+//
+//// [1, 5, 2, 3, 4, 6] would also have been a valid solution
+let divisibleNumbers = numbers.sorted(by: x, y  {
 
-// [1, 5, 2, 3, 4, 6] would also have been a valid solution
+})
 ```
 
 
@@ -104,15 +143,52 @@ numbers = [1, 2, 3, 5, 4, 6]
 
 Find the sum of the squares of all the odd numbers from `numbers` and then print it.
 
-`var numbers = [1, 2, 3, 4, 5, 6]`
+var numbers = [1, 2, 3, 4, 5, 6]
 
 a. Write code that removes all the odd numbers from the array.
+var numbersEven  = [Int]()
+for (index,num) in numbers.enumerated() {
+if num % 2 != 0 {
+numbersEven.append(num)
+}
+}
+print(numbersEven)
+//b. Write code that` squares all the numbers in the array.
+var arraySquared = [Int]()
+for num in numbers  {
+if num > -10 {
+arraySquared.append(Int(pow(Double(num), 2.0)))
+}
+}
+print(arraySquared)
 
-b. Write code that squares all the numbers in the array.
+//c. Write code that finds the sum of the array.
+//
+var sum = 0
+for num in numbers {
+sum += num
+}
+print(sum)
 
-c. Write code that finds the sum of the array.
 
-d. Now use `map`, `filter` and `reduce` to solve this problem.
+//d. Now use `map`, `filter` and `reduce` to solve this problem.
+print(numbers.map({ a -> Double in
+return Double((pow(Double(a), 2.0)))
+
+}))
+
+print(numbers.filter({a -> Bool in
+return a % 2 == 0}))
+
+print(numbers.reduce(0, {x, y in
+//ternary operator -> condition ? true : false
+return x + y
+// if x > y {return x}
+// else {return y}
+}))
+
+
+
 
 Example:
 Input: `var numbers = [1, 2, 3, 4, 5, 6]`
@@ -129,7 +205,7 @@ Function with Input:
 
 ```swift
 forEach([1, 2, 3, 4]) {
-    print($0 * $0)
+print($0 * $0)
 }
 ```
 
@@ -153,7 +229,7 @@ Input:
 var array1 = [1,2,3,4]
 var array2 = [5,5,5,3]
 combineArrays(array1,array2) {
-    $0 * $1
+$0 * $1
 }
 ```
 
@@ -195,19 +271,19 @@ c) ["one ", "two ", "three ", "four four ", "five five five ", "six six zero zer
 ## Question 12
 
 let myArray = [34,42,42,1,3,4,3,2,49]
-
-a) Sort `myArray` in ascending order by defining the constant `ascendingOrder` below.
-
+//
+//a) Sort `myArray` in ascending order by defining the constant `ascendingOrder` below.
+let ascendingOrder = myArray.sorted()
+print(ascendingOrder)
 ```swift
 let mySortedArray = myArray.sort(ascendingOrder)
-let ascendingOrder =
 ```
 
 b) Sort `myArray` in descending order by defining the constant `descendingOrder` below.
 
 ```swift
 let mySecondSortedArray = myArray.sort(descendingOrder)
-let descendingOrder =
+
 ```
 
 
